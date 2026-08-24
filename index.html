@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Math12 Learning Hub - học theo chương, bài, video, tài liệu, BTVN và video chữa." />
+  <title>Math12 Learning Hub</title>
+  <link rel="preconnect" href="https://www.youtube.com" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand-row">
+        <div class="brand-mark">M12</div>
+        <div>
+          <strong>Learning Hub</strong>
+          <span>Toán 12</span>
+        </div>
+        <button class="icon-btn mobile-only" id="closeSidebar" aria-label="Đóng menu">×</button>
+      </div>
+
+      <div class="source-pill" id="sourcePill">Nguồn: Google Sheets</div>
+
+      <div class="search-wrap">
+        <span>⌕</span>
+        <input id="searchInput" type="search" placeholder="Tìm bài, tiết, chủ đề..." autocomplete="off" />
+      </div>
+
+      <div class="sidebar-tabs" role="tablist">
+        <button class="tab-btn active" data-nav="course">Khóa học</button>
+        <button class="tab-btn" data-nav="favorites">Đã lưu</button>
+      </div>
+
+      <nav class="course-nav" id="courseNav" aria-label="Mục lục khóa học"></nav>
+
+      <div class="sidebar-footer">
+        <button class="secondary-btn full" id="importBtn">↻ Đồng bộ / Nhập dữ liệu</button>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-btn mobile-only" id="openSidebar" aria-label="Mở menu">☰</button>
+          <div>
+            <p class="eyebrow" id="breadcrumb">TOÁN 12</p>
+            <h1 id="lessonTitle">Chọn một bài để bắt đầu</h1>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <div class="progress-chip">
+            <span id="globalProgressText">0%</span>
+            <div class="mini-progress"><i id="globalProgressBar"></i></div>
+          </div>
+          <button class="icon-btn" id="favoriteBtn" title="Yêu thích" aria-label="Yêu thích">☆</button>
+        </div>
+      </header>
+
+      <section class="workspace">
+        <div class="content-column">
+          <section class="viewer-card">
+            <div class="viewer-toolbar">
+              <div class="resource-tabs" id="resourceTabs"></div>
+              <a class="open-external" id="openExternal" href="#" target="_blank" rel="noopener">Mở tab mới ↗</a>
+            </div>
+            <div class="viewer" id="viewer">
+              <div class="empty-viewer">
+                <div class="empty-icon">▶</div>
+                <h2>Kho học liệu Toán 12</h2>
+                <p>Chọn một tiết ở cột bên trái để xem video, tài liệu, bài tập và lời giải.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="lesson-meta-card" id="lessonMetaCard" hidden>
+            <div class="lesson-meta-head">
+              <div>
+                <p class="eyebrow" id="lessonGroupLabel"></p>
+                <h2 id="lessonMetaTitle"></h2>
+              </div>
+              <button class="primary-btn" id="completeBtn">✓ Đánh dấu hoàn thành</button>
+            </div>
+            <div class="resource-summary" id="resourceSummary"></div>
+          </section>
+
+          <section class="notes-card" id="notesCard" hidden>
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">GHI CHÚ HỌC TẬP</p>
+                <h2>Ghi chú theo mốc thời gian</h2>
+              </div>
+              <button class="secondary-btn" id="captureTimeBtn">+ Lấy thời gian video</button>
+            </div>
+            <div class="note-composer">
+              <input id="noteTime" type="text" placeholder="00:00" inputmode="numeric" />
+              <textarea id="noteText" rows="3" placeholder="Ví dụ: Chỗ này cần nhớ điều kiện f'(x) ≥ 0..."></textarea>
+              <select id="noteTag" aria-label="Loại ghi chú">
+                <option value="note">Ghi chú</option>
+                <option value="important">⭐ Quan trọng</option>
+                <option value="question">❓ Chưa hiểu</option>
+                <option value="formula">📌 Công thức</option>
+                <option value="mistake">🔥 Hay sai</option>
+              </select>
+              <button class="primary-btn" id="saveNoteBtn">Lưu ghi chú</button>
+            </div>
+            <div class="notes-list" id="notesList"></div>
+          </section>
+        </div>
+
+        <aside class="right-panel">
+          <section class="panel-card progress-panel">
+            <div class="section-head compact">
+              <div>
+                <p class="eyebrow">TIẾN ĐỘ</p>
+                <h3>Hành trình học</h3>
+              </div>
+              <strong id="progressPercent">0%</strong>
+            </div>
+            <div class="large-progress"><i id="progressBar"></i></div>
+            <div class="progress-stats">
+              <div><strong id="doneCount">0</strong><span>Đã xong</span></div>
+              <div><strong id="totalCount">0</strong><span>Tổng tiết</span></div>
+              <div><strong id="favoriteCount">0</strong><span>Đã lưu</span></div>
+            </div>
+          </section>
+
+          <section class="panel-card ai-card">
+            <div class="ai-badge">✦ GEMINI</div>
+            <h3>Trợ lý học tập AI</h3>
+            <p id="aiContext">Chọn bài học để AI hiểu đúng ngữ cảnh.</p>
+            <div class="ai-actions">
+              <button class="ai-action" data-ai-action="summary">Tóm tắt bài học</button>
+              <button class="ai-action" data-ai-action="quiz">Tạo 5 câu trắc nghiệm</button>
+              <button class="ai-action" data-ai-action="explain">Giải thích trọng tâm</button>
+            </div>
+            <div class="ai-chat">
+              <textarea id="aiQuestion" rows="3" placeholder="Hỏi về bài đang học..."></textarea>
+              <button class="primary-btn full" id="askAiBtn">Hỏi AI Tutor</button>
+            </div>
+            <div class="ai-output" id="aiOutput" hidden></div>
+          </section>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="importDialog" class="import-dialog">
+    <form method="dialog" class="dialog-card" id="importForm">
+      <div class="dialog-head">
+        <div>
+          <p class="eyebrow">DATA SOURCE</p>
+          <h2>Đồng bộ & nhập học liệu</h2>
+        </div>
+        <button class="icon-btn" value="cancel" aria-label="Đóng">×</button>
+      </div>
+
+      <div class="import-options">
+        <button type="button" class="import-option active" data-import-mode="sheet">Google Sheets</button>
+        <button type="button" class="import-option" data-import-mode="paste">Dán dữ liệu</button>
+        <button type="button" class="import-option" data-import-mode="file">CSV / TXT</button>
+      </div>
+
+      <div class="import-pane" data-pane="sheet">
+        <label>Google Sheet URL public</label>
+        <input id="sheetUrlInput" type="url" placeholder="https://docs.google.com/spreadsheets/d/..." />
+        <p class="hint">Bản hiện tại đã seed đầy đủ hyperlink từ Sheet của bạn. Đồng bộ rich-link tự động dùng endpoint Apps Script kèm trong repo; CSV public chỉ giữ được chữ hiển thị, không giữ rich hyperlink.</p>
+        <input id="syncEndpointInput" type="url" placeholder="Apps Script sync endpoint (tùy chọn)" />
+        <button type="button" class="primary-btn" id="syncSheetBtn">Đồng bộ ngay</button>
+      </div>
+
+      <div class="import-pane" data-pane="paste" hidden>
+        <label>Dán dữ liệu theo format C / B / L</label>
+        <textarea id="pasteImport" rows="10" placeholder="C|Chương 1|...\nB|Bài 1...\nL|Tiết 1|V=https://...|D=https://..."></textarea>
+        <button type="button" class="primary-btn" id="applyPasteBtn">Nhập dữ liệu</button>
+      </div>
+
+      <div class="import-pane" data-pane="file" hidden>
+        <label>Chọn file .csv hoặc .txt</label>
+        <input id="fileImport" type="file" accept=".csv,.txt,text/csv,text/plain" />
+        <button type="button" class="primary-btn" id="applyFileBtn">Đọc file</button>
+      </div>
+
+      <div class="import-status" id="importStatus"></div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>
