@@ -1,0 +1,30 @@
+name: MVP QA
+
+on:
+  push:
+    branches:
+      - feat/learning-hub-mvp
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  static-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check browser module syntax
+        run: |
+          cp src/app.js /tmp/app.mjs
+          cp src/data.js /tmp/data.mjs
+          node --check /tmp/app.mjs
+          node --check /tmp/data.mjs
+      - name: Check serverless function syntax
+        run: node --check api/gemini.js
+      - name: Check Apps Script syntax
+        run: cp apps-script/Code.gs /tmp/Code.js && node --check /tmp/Code.js
+      - name: Validate seeded course data
+        run: node tests/data-smoke.cjs
